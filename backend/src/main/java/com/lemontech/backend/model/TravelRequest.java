@@ -7,17 +7,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
-@Entity(name = "travel_request")
+/**
+ * Represents a travel request stored in the database.
+ */
+@Entity
+@Table(name = "travel_request")
 public class TravelRequest {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-
-  @Column(name = "request_id", nullable = false)
-  private int requestId;
-
-  @Column(name = "passenger_name", nullable = false)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@Column(name = "request_id", nullable = false)
+	private int requestId;
+	
+	@Column(name = "passenger_name", nullable = false)
 	private String passengerName;
 	
 	@Column(name = "airline", nullable = false)
@@ -98,4 +103,5 @@ public class TravelRequest {
 	public void setRequestId(int requestId) {
 		this.requestId = requestId;
 	}
+	
 }
