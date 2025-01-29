@@ -1,58 +1,71 @@
-# Por que trabalhar na Lemontech
-
-A Lemontech é uma empresa especializada no desenvolvimento de softwares que contribuem na Gestão das Viagens Corporativas.
-Têm como principais objetivos, reduzir custos e tornar os processos mais dinâmicos.
-O Sistema Lemontech, é utilizado por corporações e agências de viagens que buscam economia, eficiência e automação dos seus negócios.ditamos no poder da tecnologia para melhorar continuamente a vida das pessoas. 
-
-Se você tem espírito e comportamento empreendedor, muita disposição e proatividade para trabalhar em uma empresa em franca expansão, você é um forte candidato :)
-
-Como Desenvolvedor Full-stack você irá atuar no desenvolvimento de soluções em arquitetura Java Web MVC, Java EE, integrações com outros sistemas (SOAP, REST, JMS) e soluções escaláveis, participando de todo o processo de desenvolvimento, desde tomadas de decisões à codificação e testes.
-
-# O que preciso fazer?
-
-Vamos ser práticos e diretos, se você quer trabalhar conosco siga os passos abaixo:
-
-* Faça um "fork" desse projeto para sua conta GitHub.
-* Implemente o desafio descrito no tópico abaixo.
-* Faça um push para seu repositório com o desafio implementado.
-* Envie um email para (rh@lemontech.com.br) avisando que finalizou o desafio com a url do seu fork.
-* Cruze os dedos e aguarde nosso contato.
-
 # O desafio (Consulta de Solicitações de Viagens)
 
-Você deverá criar uma aplicação consumidora de nossa API de webservice para consultar solicitações de viagens e persistir em banco de dados os dados de produtos Aéreos:
+Criar uma aplicação consumidora da API de webservice para consultar solicitações de viagens e persistir em banco de dados os dados de produtos Aéreos.
 
 Endpoint: https://treinamento.lemontech.com.br/wsselfbooking/WsSelfBookingService?wsdl
 
-Credenciais para autenticação: Seré enviada por email para o candidato.
-
-Método a ser utilizado: pesquisarSolicitacao.
-
-Arquitetura: Pode-se utilizar qualquer recurso da especificação JavaEE.
+Método a ser utilizado: `pesquisarSolicitacao`.
 
 ### Requisito
 
-Consultar as solicitações de viagens filtrando pelos últimos 3 meses e separar apenas as que contenham produtos Aéreos.
+- Consultar as solicitações de viagens filtrando pelos últimos 3 meses e separar apenas as que contenham produtos Aéreos.
 
-Criar um banco de dados / tabela para persistir as informações da solicitação de viagem com as infromações básicas: Nome do Passageiro, CIA Aérea, Data/Hora de Saída e Chegada, Cidades de Origem e Destino.
+- Criar um banco de dados / tabela para persistir as informações da solicitação de viagem com as infromações básicas: Nome do Passageiro, CIA Aérea, Data/Hora de Saída e Chegada, Cidades de Origem e Destino.
 
-Segregar o serviço de consulta ao WS e o de persistência no BD, imaginando que poderiam estar em um ambiente distribuído e após consulta ao Webservice a viagem possa ser enviada de alguma forma para um local onde o serviço que fará a persistência faça a leitura desses objetos e efetive a gravação no banco de dados.
+- Segregar o serviço de consulta ao WS e o de persistência no BD, imaginando que poderiam estar em um ambiente distribuído e após consulta ao Webservice a viagem possa ser enviada de alguma forma para um local onde o serviço que fará a persistência faça a leitura desses objetos e efetive a gravação no banco de dados.
 
-Propor solução utilizando padrões e funcionalidades JavaEE.
+- Propor solução utilizando padrões e funcionalidades JavaEE.
 
-### Arquitetura e documentação
+# Solução
 
-No arquivo README do projeto explique o funcionamento e a arquitetura da solução adotada na sua implementação. Descreva também os passos para executar corretamente seu projeto.
+A seguir será apresentada a solução proposta para o desafio.
 
-### Avaliação
+## Backend
 
-Entre os critérios de avaliação estão:
+No backend, a solução foi estruturada para garantir a separação das responsabilidades entre os módulos.
 
-* Facilidade de configuração do projeto
-* Performance
-* Código limpo e organização
-* Documentação de código
-* Documentação do projeto (readme)
-* Arquitetura
-* Boas práticas de desenvolvimento
-* Design Patterns
+- *TravelRequest*: Entidade que representa a solicitação de viagem com as informações básicas: Nome do Passageiro, CIA Aérea, Data/Hora de Saída e Chegada, Cidades de Origem e Destino.
+- *TravelRequestRepository*: Responsável por realizar a persistência das informações no banco de dados.
+- *TravelRequestController*: Responsável por receber as requisições HTTP e delegar a execução do serviço de consulta de solicitações de viagens.
+- *TravelApiService*: Responsável por realizar a consulta ao webservice externo de solicitações de viagens.
+- *TravelRequestService*: Responsável por persistir as informações das solicitações de viagens no banco de dados. 
+
+### Tecnologias
+
+- **Spring Boot**: Framework Java para criação de aplicações web.
+- **Spring Data JPA**: Framework Java para facilitar a persistência das informações no banco de dados.
+- **Spring Web**: Conjunto de bibliotecas para criar e expor APIs RESTful de maneira simplificada.
+- **PostgreSQL**: Banco de dados relacional utilizado para armazenar as informações da aplicação.
+- **Apache CXF (JAX-WS)**: Framework para criar e consumir webservices SOAP.
+- **Apache CXF (JAX-RS)**: Framework para criar e consumir webservices RESTful.
+
+### Execução
+
+Para executar a aplicação, primeiro faça o clone do repositório:
+
+```bash
+git clone git@github.com:sofiarovaris/fullstack-java-teste.git
+```
+
+Em seguida, acesse o diretório do projeto:
+
+```bash
+cd fullstack-java-teste/backend
+```
+Configure as variáveis de ambiente do modo que preferir, no Eclipse, por exemplo, você pode configurar as variáveis de ambiente da seguinte forma:
+
+- Clique com o botão direito no projeto e vá em `Run As` -> `Run Configurations...`
+- Na aba `Environment`, clique em `New...` e adicione as variáveis de ambiente necessárias.
+- Clique em `Apply` e depois em `Run`.
+
+As variáveis de ambiente necessárias são:
+
+- **POSTGRES_URL**: URL de conexão com o banco de dados.
+- **POSTGRES_USER**: Usuário do banco de dados.
+- **POSTGRES_PASSWORD**: Senha do banco de dados.
+
+- **LEMONTECH_API_CLIENT_KEY**: Chave de autenticação do cliente para acessar o webservice.
+- **LEMONTECH_API_USERNAME**: Usuário para autenticação no webservice.
+- **LEMONTECH_API_PASSWORD**: Senha para autenticação no webservice.
+
+Após configurar as variáveis de ambiente, execute a aplicação.
