@@ -1,10 +1,17 @@
-'use client'; 
+'use client';
 
 import type { TravelRequestType } from '@/app/types/travelRequestType';
 import { Table, TableColumnsType, TableProps, type TablePaginationConfig } from 'antd';
 import React, { useState } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
 import type { FilterValue, SorterResult, TableCurrentDataSource } from 'antd/es/table/interface';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt-br';
+
+const formatDate = (dateString?: string) => {
+  if (!dateString) return '-';
+  return dayjs(dateString).locale('pt-br').format('DD/MM/YYYY HH:mm');
+};
 
 const columns: TableColumnsType<TravelRequestType> = [
   {
@@ -35,11 +42,13 @@ const columns: TableColumnsType<TravelRequestType> = [
     title: 'Data de Partida',
     dataIndex: 'departureTime',
     sorter: (a, b) => a.departureTime.localeCompare(b.departureTime),
+    render: (_, record) => formatDate(record.departureTime), // Garante que vem do objeto correto
   },
   {
     title: 'Data de Chegada',
     dataIndex: 'arrivalTime',
     sorter: (a, b) => a.arrivalTime.localeCompare(b.arrivalTime),
+    render: (_, record) => formatDate(record.arrivalTime),
   },
 ];
 
@@ -51,20 +60,24 @@ interface TableComponentProps {
 }
 
 const TableComponent: React.FC<TableComponentProps> = ({ page, pageSize, loading, data }) => {
-
   const [pagination, setPagination] = useState({
     current: page,
     pageSize,
-    total: 0,
+    total: data.length,
   });
 
-  function onChange(pagination: TablePaginationConfig, filters: Record<string, FilterValue | null>, sorter: SorterResult<TravelRequestType> | SorterResult<TravelRequestType>[], extra: TableCurrentDataSource<TravelRequestType>) {
+  function onChange(
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue | null>,
+    sorter: SorterResult<TravelRequestType> | SorterResult<TravelRequestType>[],
+    extra: TableCurrentDataSource<TravelRequestType>
+  ) {
     setPagination({
       current: pagination.current || 1,
       pageSize: pagination.pageSize || 5,
-      total: pagination.total || 0,
+      total: pagination.total || data.length,
     });
-  };
+  }
 
   return (
     <div>

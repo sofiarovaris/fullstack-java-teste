@@ -37,6 +37,8 @@ function TravelRequestsView() {
         style={{
           width: '80%',
           maxWidth: '1000px',
+          height: '700px',
+          minHeight: '700px',
           padding: '20px',
           borderRadius: '10px',
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
