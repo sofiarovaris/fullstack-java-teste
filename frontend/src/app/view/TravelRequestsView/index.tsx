@@ -1,0 +1,80 @@
+'use client';
+
+import TableComponent from '@/app/components/TableComponent';
+import { fetchTravelRequests } from '@/app/services/travelRequestApi';
+import type { TravelRequestType } from '@/app/types/travelRequestType';
+import { Button, Card, Typography } from 'antd';
+import { useState } from 'react';
+
+const { Title, Text, Paragraph } = Typography;
+
+function TravelRequestsView() {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<TravelRequestType[]>([]);
+  const [page] = useState<number>(1);
+  const [pageSize] = useState<number>(5);
+
+  async function loadData () {
+    setLoading(true);
+    const response = await fetchTravelRequests();
+    setData(response.data);
+    setLoading(false);
+  };
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f0f2f5',
+        padding: '20px',
+      }}
+    >
+      <Card
+        bordered={false}
+        style={{
+          width: '80%',
+          maxWidth: '1000px',
+          padding: '20px',
+          borderRadius: '10px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+          backgroundColor: 'white',
+        }}
+        title={
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Title level={3} style={{ margin: 0 }}>
+              Desafio Lemontech - Pesquisar solicitações de viagens
+            </Title>
+            <Button type="primary" onClick={loadData} >
+              Buscar
+            </Button>
+          </div>
+        }
+      >
+        <Paragraph
+          style={{
+            marginBottom: '20px',
+            color: '#555',
+            fontSize: '16px',
+          }}
+        >
+          Solicitações de viagens realizadas nos últimos três meses. Os dados estão{' '}
+          <Text strong> paginados </Text> e <Text strong>podem ser ordenados</Text> conforme necessidade.
+        </Paragraph>
+
+        <TableComponent page={page} pageSize={pageSize} loading={loading} data={data} />
+      </Card>
+    </div>
+  );
+}
+
+export default TravelRequestsView;
