@@ -19,7 +19,7 @@ function TravelRequestsView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<TravelRequestType[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [pageSize] = useState<number>(5);
+  const [pageSize] = useState<number>(6);
   const [total, setTotal] = useState<number>(0);  // Adicionado para total de itens
 
   /**
@@ -51,7 +51,7 @@ function TravelRequestsView() {
         bordered={false}
         style={{
           width: '100%',
-          maxWidth: '1000px',
+          maxWidth: '1400px',
           height: 'auto',
           minHeight: '500px',
           padding: '20px',
@@ -90,7 +90,16 @@ function TravelRequestsView() {
           <Text strong> paginados </Text> e <Text strong>podem ser ordenados</Text> conforme necessidade.
         </Paragraph>
 
-        <TableComponent page={page} pageSize={pageSize} loading={loading} data={data} total={total} setPage={setPage} />
+        <div style={{ maxHeight: '450px', overflowY: 'auto' }}>
+          <TableComponent
+            page={page}
+            pageSize={pageSize}
+            loading={loading}
+            data={data}
+            total={total}
+            setPage={setPage}
+          />
+        </div>
       </Card>
     </div>
   );
