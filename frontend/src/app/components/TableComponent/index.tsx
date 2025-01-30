@@ -1,12 +1,9 @@
-'use client';
-
 import type { TravelRequestType } from '@/app/types/travelRequestType';
-import { Table, TableColumnsType, TableProps, type TablePaginationConfig } from 'antd';
-import React, { useState } from 'react';
-import LoadingIndicator from '../LoadingIndicator';
-import type { FilterValue, SorterResult, TableCurrentDataSource } from 'antd/es/table/interface';
+import { Table, TableColumnsType, type TablePaginationConfig } from 'antd';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
+import React, { useState } from 'react';
+import LoadingIndicator from '../LoadingIndicator';
 
 const formatDate = (dateString?: string) => {
   if (!dateString) return '-';
@@ -17,6 +14,7 @@ const columns: TableColumnsType<TravelRequestType> = [
   {
     title: 'ID da Solicitação',
     dataIndex: 'requestId',
+    key: 'requestId',
   },
   {
     title: 'Nome do Passageiro',
@@ -42,7 +40,7 @@ const columns: TableColumnsType<TravelRequestType> = [
     title: 'Data de Partida',
     dataIndex: 'departureTime',
     sorter: (a, b) => a.departureTime.localeCompare(b.departureTime),
-    render: (_, record) => formatDate(record.departureTime), // Garante que vem do objeto correto
+    render: (_, record) => formatDate(record.departureTime),
   },
   {
     title: 'Data de Chegada',
@@ -57,6 +55,8 @@ interface TableComponentProps {
   pageSize: number;
   loading: boolean;
   data: TravelRequestType[];
+  total: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;  // Função para setar o número da página
 }
 
 /**
@@ -69,25 +69,26 @@ interface TableComponentProps {
  * 
  * @returns {JSX.Element} A table component displaying the travel request data with pagination and sorting capabilities.
  */
-const TableComponent: React.FC<TableComponentProps> = ({ page, pageSize, loading, data }) => {
+const TableComponent: React.FC<TableComponentProps> = ({ page, pageSize, loading, data, total, setPage }) => {
   const [pagination, setPagination] = useState({
     current: page,
     pageSize,
-    total: data.length,
+    total,
   });
 
-  function onChange(
-    pagination: TablePaginationConfig,
-    filters: Record<string, FilterValue | null>,
-    sorter: SorterResult<TravelRequestType> | SorterResult<TravelRequestType>[],
-    extra: TableCurrentDataSource<TravelRequestType>
-  ) {
+  function onChange(pagination: TablePaginationConfig) {
     setPagination({
       current: pagination.current || 1,
       pageSize: pagination.pageSize || 5,
-      total: pagination.total || data.length,
+      total: pagination.total || total,
     });
+    setPage(pagination.current || 1);
   }
+
+  const dataWithKeys = data.map((item, index) => ({
+    ...item,
+    key: `${index}-${item.requestId}`,
+  }));
 
   return (
     <div>
@@ -96,9 +97,10 @@ const TableComponent: React.FC<TableComponentProps> = ({ page, pageSize, loading
       ) : (
         <Table<TravelRequestType>
           columns={columns}
-          dataSource={data}
+          dataSource={dataWithKeys}
           pagination={pagination}
           onChange={onChange}
+          rowKey="key"
         />
       )}
     </div>
