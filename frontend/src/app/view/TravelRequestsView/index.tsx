@@ -8,12 +8,26 @@ import { useState } from 'react';
 
 const { Title, Text, Paragraph } = Typography;
 
+/**
+ * TravelRequestsView component displays a view where users can search for
+ * travel requests made in the last three months.
+ * 
+ * It includes a title, description, and a table displaying the travel requests,
+ * with the ability to fetch data from an API and paginate the results.
+ *
+ * @component
+ */
 function TravelRequestsView() {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<TravelRequestType[]>([]);
   const [page] = useState<number>(1);
   const [pageSize] = useState<number>(5);
 
+  /**
+   * Asynchronously loads the travel requests data from the API and sets the state.
+   * This function is called when the user clicks the 'Buscar' button.
+   * It also manages the loading state to show the loading spinner during data fetch.
+   */
   async function loadData () {
     setLoading(true);
     const response = await fetchTravelRequests();

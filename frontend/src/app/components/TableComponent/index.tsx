@@ -59,6 +59,16 @@ interface TableComponentProps {
   data: TravelRequestType[];
 }
 
+/**
+ * TableComponent displays a table of travel requests with paginated data and sortable columns.
+ * 
+ * @param {number} page - The current page number for pagination.
+ * @param {number} pageSize - The number of records per page for pagination.
+ * @param {boolean} loading - A flag that indicates whether the table is in a loading state.
+ * @param {TravelRequestType[]} data - The data to be displayed in the table, representing travel requests.
+ * 
+ * @returns {JSX.Element} A table component displaying the travel request data with pagination and sorting capabilities.
+ */
 const TableComponent: React.FC<TableComponentProps> = ({ page, pageSize, loading, data }) => {
   const [pagination, setPagination] = useState({
     current: page,

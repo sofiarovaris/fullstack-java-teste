@@ -20,6 +20,11 @@ Método a ser utilizado: `pesquisarSolicitacao`.
 
 A seguir será apresentada a solução proposta para o desafio.
 
+## Ambiente
+- **Java**: 17
+- **Node.js**: 20
+- **NPM**: 10
+
 ## Backend
 
 No backend, a solução foi estruturada para garantir a separação das responsabilidades entre os módulos.
@@ -68,4 +73,45 @@ As variáveis de ambiente necessárias são:
 - **LEMONTECH_API_USERNAME**: Usuário para autenticação no webservice.
 - **LEMONTECH_API_PASSWORD**: Senha para autenticação no webservice.
 
+- **CORS_ORIGINS**: URL de origem permitida para acessar a API.
+
 Após configurar as variáveis de ambiente, execute a aplicação.
+
+## Frontend
+
+No frontend, a solução foi implementada usando a estrutura bem definida de componentes do React.
+
+Existe apenas uma página, a que exibe a lista de solicitações de viagens. Os componentes, tipos, servicos e views estão organizados em pastas separadas.
+
+### Tecnologias
+
+- **React**: Biblioteca JavaScript para criar interfaces de usuário.
+- **Next.js**: Framework React para criar aplicações web.
+- **DayJs**: Biblioteca JavaScript para manipulação de datas.
+- **Ant Design**: Biblioteca de componentes React.
+
+### Configuração
+
+Para configurar a aplicação, copie o arquivo `.env.example` e renomeie para `.env`. Em seguida, configure a variável de ambiente `NEXT_PUBLIC_API_URL` com a URL da API do backend.
+
+### Execução
+
+Como o clone do repositorio já foi feito, acesse o diretório do projeto:
+
+```bash
+cd fullstack-java-teste/frontend
+```
+
+Instale as dependências do projeto:
+
+```bash
+npm install
+```
+
+Execute a aplicação:
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em `http://localhost:3000`.
